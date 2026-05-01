@@ -2,8 +2,6 @@
 
 A beginner-friendly **User Management System** built with **Spring Boot** (REST API) and a plain **HTML, CSS, JavaScript** frontend. This project demonstrates how a frontend communicates with a backend over REST APIs using JSON.
 
-> 🚀 **Live Demo** — Deployed on AWS EC2 at `http://18.208.252.106:8080`
-
 ---
 
 ## 🔧 Tech Stack
@@ -34,7 +32,7 @@ A beginner-friendly **User Management System** built with **Spring Boot** (REST 
 
 ## 🚀 Deployment
 
-This project is deployed on an **AWS EC2 Free Tier** VPS running Ubuntu 22.04.
+This project is deployed on an **AWS EC2** VPS running Ubuntu 22.04.
 
 ### What was set up on the server:
 - Java 21 (openjdk-21-jdk)
@@ -95,7 +93,8 @@ usermanagement/
 
 ## 📸 Screenshots
 
-> Add screenshots of your app here
+<img width="1915" height="1011" alt="image" src="https://github.com/user-attachments/assets/633457fe-7771-45c3-9c78-67f6b44cc505" />
+
 
 ---
 
