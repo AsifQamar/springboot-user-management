@@ -2,7 +2,7 @@
 
 A beginner-friendly **User Management System** built with **Spring Boot** (REST API) and a plain **HTML, CSS, JavaScript** frontend. This project demonstrates how a frontend communicates with a backend over REST APIs using JSON.
 
-> 🚀 **Live Demo** — Deployed on AWS EC2 (Free Tier) at `http://18.208.252.106:8080`
+> 🚀 **Live Demo** — Deployed on AWS EC2 at `http://18.208.252.106:8080`
 
 ---
 
@@ -112,7 +112,7 @@ usermanagement/
 ## 👨‍💻 Author
 
 **Asif Qamar**  
-[GitHub](https://github.com/AsifQamar) • [LinkedIn](#)
+[GitHub](https://github.com/AsifQamar) • [LinkedIn](https://www.linkedin.com/in/asif-qamar)
 
 ---
 
