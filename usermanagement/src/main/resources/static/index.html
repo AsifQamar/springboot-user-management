@@ -1,56 +1,459 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Management</title>
     <style>
-        body { font-family: Arial; }
-        input { margin: 5px; }
+        /* --- CSS Variables --- */
+        :root {
+            --bg-body: #f3f4f6;
+            --bg-surface: #ffffff;
+            --bg-form: #f9fafb;
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #e5e7eb;
+
+            --primary: #2563eb;
+            --primary-hover: #1d4ed8;
+            --success: #16a34a;
+            --success-hover: #15803d;
+            --danger: #ef4444;
+            --danger-hover: #dc2626;
+            --warning: #eab308;
+            --warning-hover: #ca8a04;
+            --secondary: #9ca3af;
+            --secondary-hover: #6b7280;
+
+            --radius: 8px;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --transition: all 0.2s ease;
+        }
+
+        /* --- Global Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.5;
+            padding: 2rem;
+        }
+
+        .container {
+            max-w-width: 1024px;
+            margin: 0 auto;
+            background-color: var(--bg-surface);
+            padding: 2rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-main);
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            color: white;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .btn-primary { background-color: var(--primary); }
+        .btn-primary:hover { background-color: var(--primary-hover); }
+
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: var(--success-hover); }
+
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: var(--danger-hover); }
+
+        .btn-warning { background-color: var(--warning); }
+        .btn-warning:hover { background-color: var(--warning-hover); }
+
+        .btn-secondary { background-color: var(--secondary); }
+        .btn-secondary:hover { background-color: var(--secondary-hover); }
+
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.8rem;
+        }
+
+        /* --- Controls (Search & Add) --- */
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
+            width: 50%;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.5rem 2.5rem 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+        }
+
+        .search-btn {
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Form --- */
+        .form-container {
+            background-color: var(--bg-form);
+            padding: 1.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-container h2 {
+            margin-bottom: 1rem;
+            font-size: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary);
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        /* --- Table --- */
+        .table-container {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: 0 0 0 1px var(--border-color);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            text-align: left;
+        }
+
+        th {
+            background-color: #1f2937;
+            color: white;
+            padding: 0.75rem 1rem;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: var(--bg-form);
+        }
+
+        tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .action-cell {
+            text-align: center;
+        }
+
+        .action-cell button {
+            margin: 0 0.25rem;
+        }
+
+        /* --- Pagination --- */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        .page-info {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* --- Utilities --- */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-<h2>Add User</h2>
+<div class="container">
+    <h1>User Management</h1>
 
-<input type="text" id="name" placeholder="Name">
-<input type="email" id="email" placeholder="Email">
-<button onclick="addUser()">Add</button>
+    <!-- Controls: Search and Add Button -->
+    <div class="controls">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search users by name...">
+            <button onclick="handleSearch()" class="search-btn"></button>
+        </div>
+        <button onclick="openForm()" class="btn btn-primary">+ Add User</button>
+    </div>
 
-<h2>Users</h2>
-<ul id="userList"></ul>
+    <!-- User Form (Hidden by default) -->
+    <div id="userFormContainer" class="form-container hidden">
+        <h2 id="formTitle">Add New User</h2>
+        <form id="userForm" onsubmit="handleFormSubmit(event)">
+            <input type="hidden" id="userId">
+            <div class="form-group">
+                <label for="userName">Name</label>
+                <input type="text" id="userName" required>
+            </div>
+            <div class="form-group">
+                <label for="userEmail">Email</label>
+                <input type="email" id="userEmail" required>
+            </div>
+            <div class="form-actions">
+                <button type="button" onclick="closeForm()" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-success">Save User</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Users Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th style="width: 10%;">ID</th>
+                <th style="width: 35%;">Name</th>
+                <th style="width: 35%;">Email</th>
+                <th style="width: 20%; text-align: center;">Actions</th>
+            </tr>
+            </thead>
+            <tbody id="userTableBody">
+            <!-- Rows will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        <p id="pageInfo" class="page-info"></p>
+        <div class="pagination-controls">
+            <button id="prevBtn" onclick="changePage(-1)" class="btn btn-secondary">Previous</button>
+            <button id="nextBtn" onclick="changePage(1)" class="btn btn-secondary">Next</button>
+        </div>
+    </div>
+</div>
 
 <script>
-    function addUser() {
-        const user = {
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value
-        };
+    const API_URL = '/api/users';
+    let currentPage = 0;
+    const pageSize = 5;
+    let totalPages = 0;
 
-        fetch("http://localhost:8080/api/users", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(user)
-        })
-        .then(() => loadUsers());
+    document.addEventListener('DOMContentLoaded', fetchUsers);
+
+    async function fetchUsers() {
+        const searchTerm = document.getElementById('searchInput').value;
+        try {
+            const response = await fetch(`${API_URL}?page=${currentPage}&size=${pageSize}&search=${searchTerm}`);
+            const data = await response.json();
+
+            totalPages = data.totalPages;
+            updateTable(data.content);
+            updatePaginationControls(data);
+        } catch (error) {
+            console.error("Error fetching users:", error);
+            alert("Failed to load users from the server.");
+        }
     }
 
-    function loadUsers() {
-        fetch("http://localhost:8080/api/users")
-            .then(res => res.json())
-            .then(data => {
-                const list = document.getElementById("userList");
-                list.innerHTML = "";
-                data.forEach(u => {
-                    const li = document.createElement("li");
-                    li.textContent = u.name + " - " + u.email;
-                    list.appendChild(li);
-                });
+    function updateTable(users) {
+        const tbody = document.getElementById('userTableBody');
+        tbody.innerHTML = '';
+
+        if (users.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted);">No users found.</td></tr>';
+            return;
+        }
+
+        users.forEach((user) => {
+            tbody.innerHTML += `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.name}</td>
+                    <td>
+                        <a href="mailto:${user.email}">${user.email}</a>
+                    </td>
+                    <td class="action-cell">
+                        <button onclick='editUser(${JSON.stringify(user)})' class="btn btn-warning btn-sm">Edit</button>
+                        <button onclick="deleteUser(${user.id})" class="btn btn-danger btn-sm">Delete</button>
+                    </td>
+                </tr>
+            `;
+        });
+    }
+
+    async function handleFormSubmit(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('userId').value;
+        const name = document.getElementById('userName').value;
+        const email = document.getElementById('userEmail').value;
+
+        const user = { name, email };
+        const method = id ? 'PUT' : 'POST';
+        const url = id ? `${API_URL}/${id}` : API_URL;
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
             });
+
+            if (response.ok) {
+                closeForm();
+                fetchUsers();
+            } else {
+                alert("Error saving user.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
-    loadUsers();
-</script>
+    async function deleteUser(id) {
+        if (confirm('Are you sure you want to delete this user?')) {
+            try {
+                const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    if (document.getElementById('userTableBody').children.length === 1 && currentPage > 0) {
+                        currentPage--;
+                    }
+                    fetchUsers();
+                }
+            } catch (error) {
+                console.error("Error deleting user:", error);
+            }
+        }
+    }
 
+    function handleSearch() {
+        currentPage = 0;
+        fetchUsers();
+    }
+
+    function changePage(direction) {
+        currentPage += direction;
+        fetchUsers();
+    }
+
+    function updatePaginationControls(data) {
+        document.getElementById('pageInfo').innerText = `Showing page ${data.number + 1} of ${data.totalPages || 1}`;
+        document.getElementById('prevBtn').disabled = data.first;
+        document.getElementById('nextBtn').disabled = data.last;
+    }
+
+    function openForm() {
+        document.getElementById('userForm').reset();
+        document.getElementById('userId').value = '';
+        document.getElementById('formTitle').innerText = 'Add New User';
+        document.getElementById('userFormContainer').classList.remove('hidden');
+    }
+
+    function closeForm() {
+        document.getElementById('userFormContainer').classList.add('hidden');
+    }
+
+    function editUser(user) {
+        document.getElementById('userId').value = user.id;
+        document.getElementById('userName').value = user.name;
+        document.getElementById('userEmail').value = user.email;
+        document.getElementById('formTitle').innerText = 'Edit User';
+        document.getElementById('userFormContainer').classList.remove('hidden');
+        window.scrollTo(0, 0);
+    }
+
+    document.getElementById('searchInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
+    });
+</script>
 </body>
 </html>

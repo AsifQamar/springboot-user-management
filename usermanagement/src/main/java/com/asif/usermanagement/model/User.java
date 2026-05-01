@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 public class User {
     @Id //PRIMARY KEY
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
+    private Long id;
 
     private String name;
     private String email;
@@ -19,14 +19,14 @@ public class User {
 
     }
     public Long getId(){
-        return Id;
+        return id;
     }
 
     public String getName(){
         return name;
     }
 
-    public void setName(){
+    public void setName(String name){
         this.name=name;
     }
     public String getEmail(){
